@@ -46,7 +46,7 @@ export function injectTransferTools(agentDefs: AgentConfig[]): AgentConfig[] {
             destination_agent: {
               type: "string",
               description:
-                "The more specialized destination_agent that should handle the user’s intended request.",
+                "The more specialized destination_agent that should handle the user's intended request.",
               enum: downstreamAgents.map((dAgent) => dAgent.name),
             },
           },
