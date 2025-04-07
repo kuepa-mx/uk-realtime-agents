@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Realtime API Agents",
-  description: "A demo app from OpenAI.",
+  description: "A demo app from Universidad UK.",
 };
 
 export default function RootLayout({

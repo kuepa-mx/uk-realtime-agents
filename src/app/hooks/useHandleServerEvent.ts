@@ -130,6 +130,25 @@ export function useHandleServerEvent({
           break;
         }
 
+        if (role === "user") {
+          const mostRecentAssistantMessage = [...transcriptItems]
+            .reverse()
+            .find((item) => item.role === "assistant" && item.status === "IN_PROGRESS");
+            
+          if (mostRecentAssistantMessage) {
+            sendClientEvent({
+              type: "conversation.item.truncate",
+              item_id: mostRecentAssistantMessage?.itemId,
+              content_index: 0,
+              audio_end_ms: Date.now() - mostRecentAssistantMessage.createdAtMs,
+            });
+            sendClientEvent(
+              { type: "response.cancel" },
+              "(cancel due to new user message)"
+            );
+          }
+        }
+
         if (itemId && role) {
           if (role === "user" && !text) {
             text = "[Transcribing...]";
@@ -183,6 +202,26 @@ export function useHandleServerEvent({
         const itemId = serverEvent.item?.id;
         if (itemId) {
           updateTranscriptItemStatus(itemId, "DONE");
+        }
+        break;
+      }
+
+      case "input_audio.detected": {
+        const mostRecentAssistantMessage = [...transcriptItems]
+          .reverse()
+          .find((item) => item.role === "assistant" && item.status === "IN_PROGRESS");
+          
+        if (mostRecentAssistantMessage) {
+          sendClientEvent({
+            type: "conversation.item.truncate",
+            item_id: mostRecentAssistantMessage?.itemId,
+            content_index: 0,
+            audio_end_ms: Date.now() - mostRecentAssistantMessage.createdAtMs,
+          });
+          sendClientEvent(
+            { type: "response.cancel" },
+            "(cancel due to user interruption via voice detection)"
+          );
         }
         break;
       }
