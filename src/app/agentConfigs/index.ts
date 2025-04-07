@@ -5,10 +5,10 @@ import simpleExample from "./simpleExample";
 import cursorGuide from "./cursorGuide";
 
 export const allAgentSets: AllAgentConfigsType = {
-  frontDeskAuthentication,
-  customerServiceRetail,
-  simpleExample,
+  // frontDeskAuthentication,
+  // customerServiceRetail,
+  // simpleExample,
   cursorGuide,
 };
 
-export const defaultAgentSetKey = "simpleExample";
+export const defaultAgentSetKey = "cursorGuide";
