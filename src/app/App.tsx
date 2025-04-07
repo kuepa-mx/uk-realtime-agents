@@ -35,6 +35,7 @@ function App() {
   const [selectedAgentName, setSelectedAgentName] = useState<string>("");
   const [selectedAgentConfigSet, setSelectedAgentConfigSet] =
     useState<AgentConfig[] | null>(null);
+  const [selectedVoice, setSelectedVoice] = useState<string>("sage");
 
   const [dataChannel, setDataChannel] = useState<RTCDataChannel | null>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
@@ -250,7 +251,7 @@ function App() {
       session: {
         modalities: ["text", "audio"],
         instructions,
-        voice: "coral",
+        voice: selectedVoice,
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
         input_audio_transcription: { model: "whisper-1" },
@@ -372,6 +373,10 @@ function App() {
     if (storedAudioPlaybackEnabled) {
       setIsAudioPlaybackEnabled(storedAudioPlaybackEnabled === "true");
     }
+    const storedVoice = localStorage.getItem("selectedVoice");
+    if (storedVoice) {
+      setSelectedVoice(storedVoice);
+    }
   }, []);
 
   useEffect(() => {
@@ -388,6 +393,14 @@ function App() {
       isAudioPlaybackEnabled.toString()
     );
   }, [isAudioPlaybackEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem("selectedVoice", selectedVoice);
+
+    if (sessionStatus === "CONNECTED") {
+      updateSession();
+    }
+  }, [selectedVoice]);
 
   useEffect(() => {
     if (audioElementRef.current) {
@@ -509,6 +522,8 @@ function App() {
         setIsEventsPaneExpanded={setIsEventsPaneExpanded}
         isAudioPlaybackEnabled={isAudioPlaybackEnabled}
         setIsAudioPlaybackEnabled={setIsAudioPlaybackEnabled}
+        selectedVoice={selectedVoice}
+        setSelectedVoice={setSelectedVoice}
       />
     </div>
   );
