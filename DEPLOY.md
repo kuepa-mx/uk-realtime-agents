@@ -1,71 +1,71 @@
-# Guía de Despliegue para WebRTC Agents App
+# Deployment Guide for WebRTC Agents App
 
-Esta guía proporciona los pasos necesarios para desplegar la aplicación en un entorno de producción para múltiples usuarios.
+This guide provides the necessary steps to deploy the application in a production environment for multiple users.
 
-## Requisitos Previos
+## Prerequisites
 
-- Node.js (versión 18.x o superior)
-- Una cuenta de OpenAI con acceso a la API de Realtime Agents
-- Una clave API de OpenAI con permisos para el servicio de Realtime Agents
+- Node.js (version 18.x or higher)
+- An OpenAI account with access to the Realtime Agents API
+- An OpenAI API key with permissions for the Realtime Agents service
 
-## Preparación para el Despliegue
+## Preparation for Deployment
 
-### 1. Configuración de Variables de Entorno
+### 1. Environment Variables Configuration
 
-Crea un archivo `.env.production` con las siguientes variables:
+Create a `.env.production` file with the following variables:
 
 ```
-OPENAI_API_KEY=tu_clave_api_de_openai
-# API_BASE_URL=https://api.openai.com (opcional)
-# PORT=3000 (opcional)
+OPENAI_API_KEY=your_openai_api_key
+# API_BASE_URL=https://api.openai.com (optional)
+# PORT=3000 (optional)
 ```
 
-**IMPORTANTE**: Nunca comitees tu archivo `.env.production` a un repositorio público.
+**IMPORTANT**: Never commit your `.env.production` file to a public repository.
 
-### 2. Construir la Aplicación
+### 2. Build the Application
 
 ```bash
 npm run build
 ```
 
-Este comando generará una versión optimizada de la aplicación en la carpeta `.next`.
+This command will generate an optimized version of the application in the `.next` folder.
 
-## Opciones de Despliegue
+## Deployment Options
 
-### Despliegue en Vercel (Recomendado)
+### Deployment on Vercel (Recommended)
 
-1. Instala Vercel CLI:
+1. Install Vercel CLI:
    ```bash
    npm i -g vercel
    ```
 
-2. Despliega la aplicación:
+2. Deploy the application:
    ```bash
    vercel --prod
    ```
 
-3. Configura las variables de entorno en el dashboard de Vercel.
+3. Configure environment variables in the Vercel dashboard.
 
-### Despliegue con Docker
+### Deployment with Docker
 
-1. Crea un archivo `Dockerfile`:
+1. Create a `Dockerfile`:
    ```dockerfile
    FROM node:18-alpine AS base
    
-   # Instala dependencias
+   # Install dependencies
    FROM base AS deps
    WORKDIR /app
    COPY package.json package-lock.json ./
    RUN npm ci
    
-   # Construye la aplicación
+   # Build the application
    FROM base AS builder
    WORKDIR /app
    COPY --from=deps /app/node_modules ./node_modules
    COPY . .
    RUN npm run build
    
-   # Configuración de producción
+   # Production configuration
    FROM base AS runner
    WORKDIR /app
    ENV NODE_ENV=production
@@ -73,24 +73,24 @@ Este comando generará una versión optimizada de la aplicación en la carpeta `
    COPY --from=builder /app/.next/standalone ./
    COPY --from=builder /app/.next/static ./.next/static
    
-   # Expone el puerto y ejecuta la aplicación
+   # Expose the port and run the application
    EXPOSE 3000
    CMD ["node", "server.js"]
    ```
 
-2. Construye la imagen Docker:
+2. Build the Docker image:
    ```bash
    docker build -t webrtc-agents-app .
    ```
 
-3. Ejecuta el contenedor:
+3. Run the container:
    ```bash
-   docker run -p 3000:3000 -e OPENAI_API_KEY=tu_clave_api webrtc-agents-app
+   docker run -p 3000:3000 -e OPENAI_API_KEY=your_api_key webrtc-agents-app
    ```
 
-### Despliegue en un Servidor Express (Node.js)
+### Deployment on an Express Server (Node.js)
 
-1. Crea un servidor personalizado:
+1. Create a custom server:
    ```javascript
    // server.js
    const { createServer } = require("http");
@@ -113,52 +113,56 @@ Este comando generará una versión optimizada de la aplicación en la carpeta `
    });
    ```
 
-2. Añade el script al package.json:
+2. Add the script to package.json:
    ```json
    "scripts": {
      "start:custom": "NODE_ENV=production node server.js"
    }
    ```
 
-3. Ejecuta el servidor:
+3. Run the server:
    ```bash
    npm run start:custom
    ```
 
-## Consideraciones para Multi-usuario
+## Considerations for Multi-user
 
-### Escalabilidad
+### Scalability
 
-- La aplicación utiliza WebRTC para comunicaciones en tiempo real, lo que funciona de manera eficiente para múltiples usuarios simultáneos.
-- Para alta concurrencia, considera implementar balanceo de carga con múltiples instancias.
+- The application uses WebRTC for real-time communications, which works efficiently for multiple simultaneous users.
+- For high concurrency, consider implementing load balancing with multiple instances.
 
-### Monitoreo
+### Monitoring
 
-- Implementa herramientas de monitoreo como Sentry, LogRocket o New Relic para seguimiento de errores y rendimiento.
-- Configura alertas para detectar problemas de conectividad o errores frecuentes.
+- Implement monitoring tools like Sentry, LogRocket, or New Relic for error tracking and performance monitoring.
+- Configure alerts to detect connectivity issues or frequent errors.
 
-### Seguridad
+### Security
 
-- Asegúrate de que la API Key de OpenAI esté almacenada de forma segura.
-- Considera implementar autenticación de usuarios si es necesario.
-- Mantén actualizadas todas las dependencias para prevenir vulnerabilidades.
+- Ensure that the OpenAI API Key is stored securely.
+- Consider implementing user authentication if necessary.
+- Keep all dependencies updated to prevent vulnerabilities.
 
-## Depuración en Producción
+## Debugging in Production
 
-Para habilitar logs adicionales en producción, configure:
+To enable additional logs in production, configure:
 
 ```
 DEBUG=nextjs:*,app:*
 ```
 
-## Actualizaciones y Mantenimiento
+## Updates and Maintenance
 
-1. Realiza actualizaciones regulares de dependencias:
+1. Perform regular dependency updates:
    ```bash
-   npm outdated
-   npm update
+   npm outdated # Check outdated dependencies
+   npm update # Update dependencies that can be updated without breaking changes
    ```
 
-2. Prueba cambios en un entorno de staging antes de producción.
+2. Monitor the official Next.js and OpenAI documentation for important updates and new features.
 
-3. Implementa un proceso de integración continua para automatizar pruebas y despliegues. 
+3. Implement a version control strategy and maintain a changelog to track changes.
+
+4. Periodically test the application in different environments to ensure compatibility.
+
+5. Set up automated testing if possible to catch regressions early. 

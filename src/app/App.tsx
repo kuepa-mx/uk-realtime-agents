@@ -45,7 +45,7 @@ function App() {
     useState<SessionStatus>("DISCONNECTED");
 
   const [isEventsPaneExpanded, setIsEventsPaneExpanded] =
-    useState<boolean>(true);
+    useState<boolean>(false);
   const [userText, setUserText] = useState<string>("");
   const [isPTTActive, setIsPTTActive] = useState<boolean>(false);
   const [isPTTUserSpeaking, setIsPTTUserSpeaking] = useState<boolean>(false);
@@ -254,7 +254,7 @@ function App() {
         voice: selectedVoice,
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
-        input_audio_transcription: { model: "gpt-4o-transcribe", language: "es" },
+        input_audio_transcription: { model: "gpt-4o-mini-transcribe", language: "en" },
         turn_detection: turnDetection,
         tools,
       },

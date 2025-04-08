@@ -1,11 +1,11 @@
 import { AllAgentConfigsType } from "@/app/types";
-import cursorGuide from "./cursorGuide";
+import cursorAgent from "./cursorAgent";
 
 export const allAgentSets: AllAgentConfigsType = {
   // frontDeskAuthentication,
   // customerServiceRetail,
   // simpleExample,
-  cursorGuide,
+  cursorAgent,
 };
 
-export const defaultAgentSetKey = "cursorGuide";
+export const defaultAgentSetKey = "cursorAgent";

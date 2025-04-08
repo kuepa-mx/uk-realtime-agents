@@ -117,7 +117,7 @@ function BottomToolbar({
 
       <div className="flex flex-row items-center gap-2">
         <label htmlFor="voice-selection" className="flex items-center cursor-pointer">
-          Voz
+          Voice
         </label>
         <div className="relative inline-block">
           <select

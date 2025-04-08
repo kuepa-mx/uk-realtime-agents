@@ -1,50 +1,58 @@
-FROM node:18-alpine AS base
+FROM node:20-alpine AS base
 
-# Instalar dependencias solo si es necesario
+# Install dependencies only when needed
 FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Copiar archivos de configuración de dependencias
-COPY package.json package-lock.json ./
+# Enable Corepack
+RUN corepack enable
 
-# Instalar las dependencias
-RUN npm ci
+# Install dependencies based on the preferred package manager
+COPY package.json ./
+COPY yarn.lock ./
+RUN yarn install
 
-# Construcción de la aplicación
+# Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app /app
 COPY . .
 
-# Eliminar cualquier archivo .env para asegurar que no se incluyen en la imagen
-RUN rm -f .env .env.*
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/telemetry
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-# Construir la aplicación
-RUN npm run build
+# Now build.
+RUN yarn build
 
-# Imagen de producción
+# If using npm comment out above and use below instead
+#RUN npm run build
+
+# Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
-# Definir variables de entorno para producción
 ENV NODE_ENV production
+# Uncomment the following line in case you want to disable telemetry during runtime.
+# ENV NEXT_TELEMETRY_DISABLED 1
 
-# Crear usuario no privilegiado para mayor seguridad
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
-USER nextjs
 
-# Copiar solo los artefactos necesarios del build
 COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Exponer el puerto que usará la aplicación
+RUN chown -R nextjs:nodejs /app
+
+USER nextjs
+
 EXPOSE 3000
 
-# Definir variables de entorno para la aplicación
 ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
-
-# Iniciar la aplicación
-CMD ["node", "server.js"] 
