@@ -166,3 +166,17 @@ DEBUG=nextjs:*,app:*
 4. Periodically test the application in different environments to ensure compatibility.
 
 5. Set up automated testing if possible to catch regressions early. 
+
+# DEPLOY
+1. ```bash
+docker build --platform linux/amd64 -t uk-realtime-agents:latest .
+```
+
+2. ```bash
+docker tag uk-realtime-agents:latest us-central1-docker.pkg.dev/kuepa-datos/production/uk-realtime-agents:latest
+```
+
+3. ```bash
+docker push us-central1-docker.pkg.dev/kuepa-datos/production/uk-realtime-agents:latest
+```
+

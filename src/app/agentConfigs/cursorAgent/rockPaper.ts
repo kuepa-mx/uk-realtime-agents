@@ -1,5 +1,4 @@
 import { AgentConfig } from "@/app/types";
-import { injectTransferTools } from "../utils";
 
 // Define the Rock-Paper-Scissors Agent
 const rockPaper: AgentConfig = {
