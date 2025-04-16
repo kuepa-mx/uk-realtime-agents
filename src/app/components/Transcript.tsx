@@ -73,7 +73,7 @@ function Transcript({
           onClick={handleCopyTranscript}
           className={`absolute w-20 top-3 right-2 mr-1 z-10 text-sm px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300`}
         >
-          {justCopied ? "Copied!" : "Copy"}
+          {justCopied ? "Copiado!" : "Copiar"}
         </button>
 
         <div
@@ -169,7 +169,7 @@ function Transcript({
             }
           }}
           className="flex-1 px-4 py-2 focus:outline-none"
-          placeholder="Type a message..."
+          placeholder="Escribe un mensaje..."
         />
         <button
           onClick={onSendMessage}

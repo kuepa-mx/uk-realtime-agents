@@ -46,9 +46,9 @@ function BottomToolbar({
   ];
 
   function getConnectionButtonLabel() {
-    if (isConnected) return "Disconnect";
-    if (isConnecting) return "Connecting...";
-    return "Connect";
+    if (isConnected) return "Desconectar";
+    if (isConnecting) return "Conectando...";
+    return "Conectar";
   }
 
   function getConnectionButtonClasses() {
@@ -83,7 +83,7 @@ function BottomToolbar({
           className="w-4 h-4"
         />
         <label htmlFor="push-to-talk" className="flex items-center cursor-pointer">
-          Push to talk
+          Pulsar para hablar
         </label>
         <button
           onMouseDown={handleTalkButtonDown}
@@ -97,7 +97,7 @@ function BottomToolbar({
             (!isPTTActive ? " bg-gray-100 text-gray-400" : "")
           }
         >
-          Talk
+          Hablar
         </button>
       </div>
 
@@ -111,13 +111,13 @@ function BottomToolbar({
           className="w-4 h-4"
         />
         <label htmlFor="audio-playback" className="flex items-center cursor-pointer">
-          Audio playback
+          Sonido
         </label>
       </div>
 
       <div className="flex flex-row items-center gap-2">
         <label htmlFor="voice-selection" className="flex items-center cursor-pointer">
-          Voice
+          Voz
         </label>
         <div className="relative inline-block">
           <select
@@ -149,7 +149,7 @@ function BottomToolbar({
         </div>
       </div>
 
-      <div className="flex flex-row items-center gap-2">
+      <div className="flex-row items-center gap-2 hidden">
         <input
           id="logs"
           type="checkbox"

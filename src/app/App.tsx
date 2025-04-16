@@ -33,8 +33,9 @@ function App() {
   const { logClientEvent, logServerEvent } = useEvent();
 
   const [selectedAgentName, setSelectedAgentName] = useState<string>("");
-  const [selectedAgentConfigSet, setSelectedAgentConfigSet] =
-    useState<AgentConfig[] | null>(null);
+  const [selectedAgentConfigSet, setSelectedAgentConfigSet] = useState<
+    AgentConfig[] | null
+  >(null);
   const [selectedVoice, setSelectedVoice] = useState<string>("sage");
 
   const [dataChannel, setDataChannel] = useState<RTCDataChannel | null>(null);
@@ -108,10 +109,7 @@ function App() {
       const currentAgent = selectedAgentConfigSet.find(
         (a) => a.name === selectedAgentName
       );
-      addTranscriptBreadcrumb(
-        `Agent: ${selectedAgentName}`,
-        currentAgent
-      );
+      addTranscriptBreadcrumb(`Agent: ${selectedAgentName}`, currentAgent);
       updateSession(true);
     }
   }, [selectedAgentConfigSet, selectedAgentName, sessionStatus]);
@@ -254,7 +252,10 @@ function App() {
         voice: selectedVoice,
         input_audio_format: "pcm16",
         output_audio_format: "pcm16",
-        input_audio_transcription: { model: "gpt-4o-mini-transcribe", language: "en" },
+        input_audio_transcription: {
+          model: "gpt-4o-mini-transcribe",
+          language: "en",
+        },
         turn_detection: turnDetection,
         tools,
       },
@@ -418,22 +419,22 @@ function App() {
 
   return (
     <div className="text-base flex flex-col h-screen bg-gray-100 text-gray-800 relative">
-      <div className="p-5 text-lg font-semibold flex justify-between items-center">
+      <div className="text-lg font-semibold flex justify-between items-center">
         <div className="flex items-center">
-          <div onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
+          <div
+            onClick={() => window.location.reload()}
+            style={{ cursor: "pointer" }}
+          >
             <Image
-              src="/Logo_Universidad_Uk.svg"
+              src="/certix_logo.png"
               alt="Universidad UK Logo"
-              width={20}
-              height={20}
-              className="mr-2"
+              width={120}
+              height={80}
+              className="m-4"
             />
           </div>
-          <div>
-            Universidad UK <span className="text-gray-500">Agents</span>
-          </div>
         </div>
-        <div className="flex items-center">
+        <div className="items-center hidden">
           <label className="flex items-center text-base gap-1 mr-2 font-medium">
             Scenario
           </label>
@@ -471,7 +472,7 @@ function App() {
                   onChange={handleSelectedAgentChange}
                   className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
                 >
-                  {selectedAgentConfigSet?.map(agent => (
+                  {selectedAgentConfigSet?.map((agent) => (
                     <option key={agent.name} value={agent.name}>
                       {agent.name}
                     </option>
