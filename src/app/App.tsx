@@ -28,15 +28,14 @@ import { allAgentSets, defaultAgentSetKey } from "@/app/agentConfigs";
 function App() {
   const searchParams = useSearchParams();
 
-  const { transcriptItems, addTranscriptMessage, addTranscriptBreadcrumb } =
-    useTranscript();
+  const { transcriptItems, addTranscriptMessage } = useTranscript();
   const { logClientEvent, logServerEvent } = useEvent();
 
   const [selectedAgentName, setSelectedAgentName] = useState<string>("");
   const [selectedAgentConfigSet, setSelectedAgentConfigSet] = useState<
     AgentConfig[] | null
   >(null);
-  const [selectedVoice, setSelectedVoice] = useState<string>("sage");
+  const [selectedVoice, setSelectedVoice] = useState<string>("ash");
 
   const [dataChannel, setDataChannel] = useState<RTCDataChannel | null>(null);
   const pcRef = useRef<RTCPeerConnection | null>(null);
@@ -106,10 +105,6 @@ function App() {
       selectedAgentConfigSet &&
       selectedAgentName
     ) {
-      const currentAgent = selectedAgentConfigSet.find(
-        (a) => a.name === selectedAgentName
-      );
-      addTranscriptBreadcrumb(`Agent: ${selectedAgentName}`, currentAgent);
       updateSession(true);
     }
   }, [selectedAgentConfigSet, selectedAgentName, sessionStatus]);
@@ -419,7 +414,7 @@ function App() {
 
   return (
     <div className="text-base flex flex-col h-screen bg-gray-100 text-gray-800 relative">
-      <div className="text-lg font-semibold flex justify-between items-center">
+      <div className="text-lg font-semibold flex justify-between items-center mx-4">
         <div className="flex items-center">
           <div
             onClick={() => window.location.reload()}
@@ -428,9 +423,9 @@ function App() {
             <Image
               src="/certix_logo.png"
               alt="Universidad UK Logo"
-              width={120}
+              width={100}
               height={80}
-              className="m-4"
+              className="my-2"
             />
           </div>
         </div>

@@ -63,7 +63,8 @@ export function useHandleServerEvent({
     } else if (functionCallParams.name === "transferAgents") {
       const destinationAgent = args.destination_agent;
       const newAgentConfig =
-        selectedAgentConfigSet?.find((a) => a.name === destinationAgent) || null;
+        selectedAgentConfigSet?.find((a) => a.name === destinationAgent) ||
+        null;
       if (newAgentConfig) {
         setSelectedAgentName(destinationAgent);
       }
@@ -109,11 +110,11 @@ export function useHandleServerEvent({
       case "session.created": {
         if (serverEvent.session?.id) {
           setSessionStatus("CONNECTED");
-          addTranscriptBreadcrumb(
-            `session.id: ${
-              serverEvent.session.id
-            }\nStarted at: ${new Date().toLocaleString()}`
-          );
+          // addTranscriptBreadcrumb(
+          //   `session.id: ${
+          //     serverEvent.session.id
+          //   }\nStarted at: ${new Date().toLocaleString()}`
+          // );
         }
         break;
       }
@@ -133,8 +134,11 @@ export function useHandleServerEvent({
         if (role === "user") {
           const mostRecentAssistantMessage = [...transcriptItems]
             .reverse()
-            .find((item) => item.role === "assistant" && item.status === "IN_PROGRESS");
-            
+            .find(
+              (item) =>
+                item.role === "assistant" && item.status === "IN_PROGRESS"
+            );
+
           if (mostRecentAssistantMessage) {
             sendClientEvent({
               type: "conversation.item.truncate",
@@ -209,8 +213,10 @@ export function useHandleServerEvent({
       case "input_audio.detected": {
         const mostRecentAssistantMessage = [...transcriptItems]
           .reverse()
-          .find((item) => item.role === "assistant" && item.status === "IN_PROGRESS");
-          
+          .find(
+            (item) => item.role === "assistant" && item.status === "IN_PROGRESS"
+          );
+
         if (mostRecentAssistantMessage) {
           sendClientEvent({
             type: "conversation.item.truncate",

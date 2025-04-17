@@ -42,13 +42,13 @@ function BottomToolbar({
     { value: "ballad", label: "Ballad" },
     { value: "coral", label: "Coral" },
     { value: "echo", label: "Echo" },
-    { value: "sage", label: "Sage" }
+    { value: "sage", label: "Sage" },
   ];
 
   function getConnectionButtonLabel() {
-    if (isConnected) return "Desconectar";
-    if (isConnecting) return "Conectando...";
-    return "Conectar";
+    if (isConnected) return "Disconnect";
+    if (isConnecting) return "Connecting...";
+    return "Connect";
   }
 
   function getConnectionButtonClasses() {
@@ -64,7 +64,7 @@ function BottomToolbar({
   }
 
   return (
-    <div className="p-4 flex flex-row items-center justify-center gap-x-8">
+    <div className="p-2 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
       <button
         onClick={onToggleConnection}
         className={getConnectionButtonClasses()}
@@ -78,12 +78,15 @@ function BottomToolbar({
           id="push-to-talk"
           type="checkbox"
           checked={isPTTActive}
-          onChange={e => setIsPTTActive(e.target.checked)}
+          onChange={(e) => setIsPTTActive(e.target.checked)}
           disabled={!isConnected}
           className="w-4 h-4"
         />
-        <label htmlFor="push-to-talk" className="flex items-center cursor-pointer">
-          Pulsar para hablar
+        <label
+          htmlFor="push-to-talk"
+          className="flex items-center cursor-pointer"
+        >
+          Push to talk
         </label>
         <button
           onMouseDown={handleTalkButtonDown}
@@ -93,11 +96,11 @@ function BottomToolbar({
           disabled={!isPTTActive}
           className={
             (isPTTUserSpeaking ? "bg-gray-300" : "bg-gray-200") +
-            " py-1 px-4 cursor-pointer rounded-full" +
+            " py-1 px-4 cursor-pointer rounded-lg" +
             (!isPTTActive ? " bg-gray-100 text-gray-400" : "")
           }
         >
-          Hablar
+          Talk
         </button>
       </div>
 
@@ -106,39 +109,41 @@ function BottomToolbar({
           id="audio-playback"
           type="checkbox"
           checked={isAudioPlaybackEnabled}
-          onChange={e => setIsAudioPlaybackEnabled(e.target.checked)}
+          onChange={(e) => setIsAudioPlaybackEnabled(e.target.checked)}
           disabled={!isConnected}
           className="w-4 h-4"
         />
-        <label htmlFor="audio-playback" className="flex items-center cursor-pointer">
-          Sonido
+        <label
+          htmlFor="audio-playback"
+          className="flex items-center cursor-pointer"
+        >
+          Sound
         </label>
       </div>
 
-      <div className="flex flex-row items-center gap-2">
-        <label htmlFor="voice-selection" className="flex items-center cursor-pointer">
-          Voz
+      <div className="hidden flex-row items-center gap-2">
+        <label
+          htmlFor="voice-selection"
+          className="flex items-center cursor-pointer"
+        >
+          Voice
         </label>
         <div className="relative inline-block">
           <select
             id="voice-selection"
             value={selectedVoice}
-            onChange={e => setSelectedVoice(e.target.value)}
+            onChange={(e) => setSelectedVoice(e.target.value)}
             disabled={!isConnected}
             className="appearance-none border border-gray-300 rounded-lg text-base px-2 py-1 pr-8 cursor-pointer font-normal focus:outline-none"
           >
-            {availableVoices.map(voice => (
+            {availableVoices.map((voice) => (
               <option key={voice.value} value={voice.value}>
                 {voice.label}
               </option>
             ))}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2 text-gray-600">
-            <svg
-              className="h-4 w-4"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
+            <svg className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
               <path
                 fillRule="evenodd"
                 d="M5.23 7.21a.75.75 0 011.06.02L10 10.44l3.71-3.21a.75.75 0 111.04 1.08l-4.25 3.65a.75.75 0 01-1.04 0L5.21 8.27a.75.75 0 01.02-1.06z"
@@ -154,7 +159,7 @@ function BottomToolbar({
           id="logs"
           type="checkbox"
           checked={isEventsPaneExpanded}
-          onChange={e => setIsEventsPaneExpanded(e.target.checked)}
+          onChange={(e) => setIsEventsPaneExpanded(e.target.checked)}
           className="w-4 h-4"
         />
         <label htmlFor="logs" className="flex items-center cursor-pointer">

@@ -71,7 +71,7 @@ function Transcript({
       <div className="relative flex-1 min-h-0">
         <button
           onClick={handleCopyTranscript}
-          className={`absolute w-20 top-3 right-2 mr-1 z-10 text-sm px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300`}
+          className={`hidden absolute w-20 top-3 right-2 mr-1 z-10 text-sm px-3 py-2 rounded-full bg-gray-200 hover:bg-gray-300`}
         >
           {justCopied ? "Copiado!" : "Copiar"}
         </button>
