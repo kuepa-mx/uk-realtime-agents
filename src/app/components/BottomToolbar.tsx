@@ -52,7 +52,7 @@ function BottomToolbar({
   }
 
   function getConnectionButtonClasses() {
-    const baseClasses = "text-white text-base p-2 w-36 rounded-full h-full";
+    const baseClasses = "text-white text-sm p-2 rounded-full h-full";
     const cursorClass = isConnecting ? "cursor-not-allowed" : "cursor-pointer";
 
     if (isConnected) {
@@ -64,7 +64,7 @@ function BottomToolbar({
   }
 
   return (
-    <div className="p-2 flex flex-wrap items-center justify-center gap-x-8 gap-y-2">
+    <div className="p-2 mt-4 flex flex-wrap items-center sm:justify-start md:justify-center text-sm md:gap-x-8 gap-x-4 gap-y-2">
       <button
         onClick={onToggleConnection}
         className={getConnectionButtonClasses()}
@@ -154,7 +154,7 @@ function BottomToolbar({
         </div>
       </div>
 
-      <div className="flex-row items-center gap-2 hidden">
+      <div className="hidden flex-row items-center gap-2">
         <input
           id="logs"
           type="checkbox"

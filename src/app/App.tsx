@@ -413,7 +413,7 @@ function App() {
   const agentSetKey = searchParams.get("agentConfig") || "default";
 
   return (
-    <div className="text-base flex flex-col h-screen bg-gray-100 text-gray-800 relative">
+    <div className="text-base flex flex-col min-h-screen bg-gray-100 text-gray-800 relative">
       <div className="text-lg font-semibold flex justify-between items-center mx-4">
         <div className="flex items-center">
           <div
@@ -492,7 +492,7 @@ function App() {
         </div>
       </div>
 
-      <div className="flex flex-1 gap-2 px-2 overflow-hidden relative">
+      <div className="flex flex-1 justify-center gap-2 px-1 overflow-hidden relative">
         <Transcript
           userText={userText}
           setUserText={setUserText}
